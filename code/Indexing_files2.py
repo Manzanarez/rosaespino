@@ -93,40 +93,42 @@ qp = QueryParser("content", schema=ix.schema)
 #The text to search
 
 
-A = input("\nIntroduzca la frase a buscar en los poemas: ")
+#A = input("\nIntroduzca la frase a buscar en los poemas: ")
 
+while True:
+    try:
+        A = input("Prompt to search: ")
+        if A == "Exit":
+            print("Exiting")
+            break;
+        else:
+            print("Here are the results")
+    # q = qp.parse(u"que lucis ese llanto")
+            print('\n')
+            print(A)
+            q = qp.parse(A)
 
+            with ix.searcher() as s:
+                results = s.search(q, terms=True)
 
-#q = qp.parse(u"que lucis ese llanto")
-print('\n')
-print (A)
-q = qp.parse(A)
+    # Was this results object created with terms=True?
+                if results.has_matched_terms():
+        # What terms matched in the results?
+                    print("Terms matched in the results", results.matched_terms())
 
+                    for hit in results:
+                        stored_fields = searcher.stored_fields(hit.docnum)
+                        print("\n")
+                        print(stored_fields)
+                        print("The score: ", hit.score)
+                        print("The rank: ", hit.rank)
+                        print("The document number:", hit.docnum)
+                        print("Terms matched in hit", hit.matched_terms())
 
+    except ValueError:
+        print("Invalid")
+        continue
 
-with ix.searcher() as s:
-    results = s.search(q,terms=True)
-
-#results = searcher.search(myquery)
-
-
-
-#print("How many results:",len(results))
-#print("resultados", results)
-
-# Was this results object created with terms=True?
-if results.has_matched_terms():
-    # What terms matched in the results?
-    print("Terms matched in the results", results.matched_terms())
-
-for hit in results:
-  stored_fields = searcher.stored_fields(hit.docnum)
-  print("\n")
-  print(stored_fields)
-  print("The score: ", hit.score)
-  print("The rank: ", hit.rank)
-  print("The document number:", hit.docnum)
-  print("Terms matched in hit", hit.matched_terms())
 
 
     # What terms matched in each hit?
