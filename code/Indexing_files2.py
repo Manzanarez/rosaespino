@@ -91,7 +91,11 @@ searcher = ix.searcher()
 #On what field is goingo to be done the search, in this case in "content"
 qp = QueryParser("content", schema=ix.schema)
 #The text to search
+
+
 A = input("\nIntroduzca la frase a buscar en los poemas: ")
+
+
 
 #q = qp.parse(u"que lucis ese llanto")
 print('\n')
