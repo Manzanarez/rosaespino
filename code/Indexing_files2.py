@@ -8,8 +8,8 @@ from whoosh.qparser import QueryParser
 
 #definition of the schema (fields that the index is going to have)
 schema = Schema(title=TEXT(stored=True), content=TEXT,
-                path=ID(stored=True), tags=KEYWORD, icon=STORED)
-
+ ##               path=ID(stored=True), tags=KEYWORD, icon=STORED)
+               file=TEXT, tags=KEYWORD)
 #path where the index is going to be created
 path_ix = '/home/gerardo/Documents/Mios/Docsmios/DCC/IIMAS_Cursos_IVMR/Rosa_Espino/indice'
 
@@ -31,12 +31,12 @@ writer = ix.writer()
 
 files = os.listdir(path_files)
 
-for f in files:
+for fx in files:
 #variable with the files paths (path_files) and names (f)
-    files_x = path_files + f
+    files_x = path_files + fx
 #    file2 = "/home/gerardo/Documents/Mios/Docsmios/DCC/IIMAS_Cursos_IVMR/Rosa_Espino/Poemas/1.txt"
     if os.path.isfile(files_x):
-        print(f)
+        print(fx)
         file1 = open(files_x, 'r')
         content1 = file1.read()
         file1.close()
@@ -51,7 +51,8 @@ for f in files:
         f.close()
 
     writer.add_document(title=line, content=content1,
-                    path=u"/c", tags=u"Rosa Espino")
+                        file=fx, tags=u"Rosa Espino")
+ ##                   path=u"/c", tags=u"Rosa Espino")
 
 writer.commit()
 
@@ -119,7 +120,9 @@ while True:
                     for hit in results:
                         stored_fields = searcher.stored_fields(hit.docnum)
                         print("\n")
-                        print(stored_fields)
+##                        print(stored_fields)
+                        print("Poem: "+ stored_fields['title'])
+##                        print(stored_fields['file'])
                         print("The score: ", hit.score)
                         print("The rank: ", hit.rank)
                         print("The document number:", hit.docnum)
